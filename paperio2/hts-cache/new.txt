@@ -1,0 +1,3 @@
+date	size'/'remotesize	flags(request:Update,Range state:File response:Modified,Chunked,gZipped)	statuscode	status ('servermsg')	MIME	Etag|Date	URL	localfile	(from URL)
+17:42:05	1571/1571	---M--	404	error ('Not%20Found')	text/html	date:Thu,%2013%20Mar%202025%2023:42:05%20GMT	http://10823045000730675959.playables.usercontent.goog/robots.txt		(from )
+17:42:15	913202/913202	---MCZ	200	added ('OK')	text/html	date:Thu,%2013%20Mar%202025%2023:42:00%20GMT	http://10823045000730675959.playables.usercontent.goog/v/assets/index.html	D:/mywebsites/paperio2/10823045000730675959.playables.usercontent.goog/v/assets/index.html	(from )
