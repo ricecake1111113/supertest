@@ -1,28 +1,62 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Unity WebGL Player | Pikes.io</title>
-<link rel="shortcut icon" href="style/favicon.ico">
-<link rel="stylesheet" href="style/style.css">
-<script src="UnityProgress.js"></script>
-<script src="UnityLoader.js"></script>
-<script src="ui.js"></script>
-<script>
-var gameInstance = UnityLoader.instantiate("gameContainer", "build.json", {onProgress: UnityProgress});
-</script>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Pikes.io</title>
+    <link rel="shortcut icon" href="style/favicon.ico">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="UnityProgress.js"></script>
+    <script src="UnityLoader.js"></script>
+    <script src="ui.js"></script>
+    <script>
+        var gameInstance = UnityLoader.instantiate("gameContainer", "build.json", {onProgress: UnityProgress});
+    </script>
+    <style>
+        /* Make the whole page and game container fill the screen */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: black;
+        }
+
+        .webgl-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #gameContainer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+        }
+
+        .fullscreen {
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<div class="webgl-content">
-<div id="gameContainer" style="width: 900px; height: 675px;"></div>
-<div class="footer">
-<div class="webgl-logo"></div>
-<div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
-<div class="title">Pikes.io (kourtesy of korbeli)</div>
-</div>
-
-</div>
+    <div class="webgl-content">
+        <div id="gameContainer"></div>
+        <div class="footer">
+            <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)">Fullscreen</div>
+            <div class="title">Pikes.io (kourtesy of korbeli)</div>
+        </div>
+    </div>
 </body>
 </html>
