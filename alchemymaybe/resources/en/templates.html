@@ -1,0 +1,97 @@
+
+<!-- saved from url=(0053)https://littlealchemy.com/resources/en/templates.html -->
+<html><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js" id="eppiocemhmnlbhjplcgkofciiegomcon"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js"></script><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><script id="elementInfoTemplate" type="text/html">
+	<div class="close"></div>
+	<h3><%= name %></h3>
+	<div class="elementInfoInnerContainer">
+	<% if(typeof parents === 'string') { %>
+		<div><%= parents %></div>
+	<% } else { %>
+	<% for(var i = 0; i < parents.length; i++) { %>
+		<div>
+			<ul>
+				<li>
+					<img class="elementInfoBoxIcon" src="data:image/png;base64,<%= bases.images[parents[i].id[0]] %>" >
+					<%= parents[i].names[0] %>
+				</li>
+				<li>
+					<img class="elementInfoBoxIcon" src="data:image/png;base64,<%= bases.images[parents[i].id[1]] %>" >
+					<%= parents[i].names[1] %>
+				</li>
+			</ul>
+		</div>
+	<% } %>
+	<% } %>
+	</div>
+	<a class="shareButton" target="_blank" data-elementId="<%= id %>">Share</a>
+</script>
+
+<!--
+	NOTIFICATIONS
+-->
+<script id="notificationTemplate" type="text/html">
+	<%= title %><br /><br />
+	<%= description %>
+</script>
+
+<!--
+	ACHIEVEMENTS
+-->
+<script id="achievementsTemplate" type="text/html">
+	<ul>
+	<% for(var i = 0; i < achievements.length; i++) { %>
+		<li <% if(achievements[i].earned) { %>class="achievementEntryEarned"<% } else { %>class="achievementEntryNotEarned"<% } %>>
+			<img class="achievementImage" src="img/<%= achievements[i].image %>" />
+			<div class="achievementTitle"><%= achievements[i].title %></div>
+			<div class="achievementDescription"><%= achievements[i].description %></div>
+			<div class="achievementSpacer"></div>
+		</li>
+	<% } %>
+	</ul>
+</script>
+
+<!--
+	ACHIEVEMENT
+-->
+<script id="achievementTemplate" type="text/html">
+	<p><%= description %></p>
+</script>
+
+<!--
+	LEADERBOARDS
+-->
+<script id="leaderboardsTemplate" type="text/html">
+	<% if(typeof(list) ===  "undefined" || list.length === 1) { %>
+		<p>Looks like none of your friends play Little Alchemy yet. Maybe it's a good time to share Little Alchemy with them! :)</p>
+	<% } else { %>
+		<ul class="leaderboardList">
+		<% for(var i = 0; i < list.length; i++) { %>
+			<li <% if(list[i].id == player.id) { %>class="currentPlayer"<% } %>>
+				<span class="leaderboardScore"><%= list[i].score %></span>
+				<img class="leaderboardAvatar" src="<%= list[i].avatar %>" alt="avatar" />
+				<span class="leaderboardName"><%= list[i].name %></span>
+			</li>
+		<% } %>
+		</ul>
+	<% } %>
+</script></head><body __processed_6b874485-3dbc-40b6-98bd-d1438af9348e__="true" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed=""><div class="glasp-extension-toaster" style="display: block; width: 320px; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; top: 40px; right: 24px; z-index: 9999;"><template shadowrootmode="open"><div class="glasp-extension" style="font-family: Inter;"></div></template></div><div class="glasp-extension" style="display: block; width: unset; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; bottom: 16px; right: 16px; z-index: 9999;"><template shadowrootmode="open"><div class="glasp-extension" style="font-family: Inter;"></div></template></div></body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
