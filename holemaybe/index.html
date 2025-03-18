@@ -26,22 +26,5 @@
 
 <iframe id="container" allowfullscreen></iframe>
 
-<script type="application/javascript">
-    function getParentUrl() {
-        var url = (window.location !== window.parent.location)
-            ? (document.referrer && document.referrer !== '')
-                ? document.referrer
-                : document.location.href
-            : document.location.href;
-        if (document.referrer.indexOf('localhost') !== -1) {
-            url = 'https://ricecake1111113.github.io/supertest/hole';
-        }
-        return url;
-    }
-    // Add the self-hosted game url as value of gameUrl.
-    var gameUrl = 'https://ricecake1111113.github.io/supertest/hole';
-    document.getElementById('container').src = gameUrl + '?gd_sdk_referrer_url=' + getParentUrl();
-</script>
-
 </body>
 </html>
