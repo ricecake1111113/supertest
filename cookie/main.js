@@ -16845,65 +16845,73 @@ LAUNCH THIS THING
 =======================================================================================*/
 //Game.Launch();
 
-
 //try {Game.Launch();}
 //catch(err) {console.log('ERROR : '+err.message);}
 
-window.onload=function()
-{
-	if (!Game.ready)
-	{
-		var loadLangAndLaunch=function(lang,firstLaunch)
-		{
-			if (!firstLaunch) localStorageSet('CookieClickerLang',lang);
-			
-			LoadLang('loc/EN.js?v='+Game.version,function(lang){return function(){
-				locStringsFallback=locStrings;
-				LoadLang('loc/'+lang+'.js?v='+Game.version,function(){
-					var launch=function(){
-						Game.Launch();
-						// Removed the error frame check entirely
-						console.log('[=== '+choose([
-							'Oh, hello!',
-							'hey, how\'s it hangin',
-							'About to cheat in some cookies or just checking for bugs?',
-							'Remember : cheated cookies taste awful!',
-							'Hey, Orteil here. Cheated cookies taste awful... or do they?',
-						])+' ===]');
-						Game.Load(function(){
-							Game.Init();
-							if (firstLaunch) Game.showLangSelection(true);
-						});
-					}
-					if (App && App.loadMods) App.loadMods(launch);
-					else launch();
-				});
-				}}(lang));
-		}
-		
-		var showLangSelect=function(callback)
-		{
-			var str='';
-			for (var i in Langs)
-			{
-				var lang=Langs[i];
-				str+='<div class="langSelectButton title" id="langSelect-'+i+'">'+lang.name+'</div>';
-			}
-			l('offGameMessage').innerHTML=
-			'<div class="title" id="languageSelectHeader">Language</div>'+
-			'<div class="line" style="max-width:300px;"></div>'+
-			str;
-			for (var i in Langs)
-			{
-				var lang=Langs[i];
-				AddEvent(l('langSelect-'+i),'click',function(lang){return function(){callback(lang);};}(i));
-				AddEvent(l('langSelect-'+i),'mouseover',function(lang){return function(){PlaySound('snd/smallTick.mp3',0.75);l('languageSelectHeader').innerHTML=Langs[lang].changeLanguage;};}(i));
-			}
-		}
-		
-		var lang=localStorageGet('CookieClickerLang');
-		if (App && !lang) showLangSelect(loadLangAndLaunch);
-		else if (!lang) {loadLangAndLaunch('EN',true);}
-		else loadLangAndLaunch(lang);
-	}
+window.onload = function() {
+    if (!Game.ready) {
+        var loadLangAndLaunch = function(lang, firstLaunch) {
+            if (!firstLaunch) localStorageSet('CookieClickerLang', lang);
+
+            LoadLang('loc/EN.js?v=' + Game.version, function(lang) {
+                return function() {
+                    locStringsFallback = locStrings;
+                    LoadLang('loc/' + lang + '.js?v=' + Game.version, function() {
+                        var launch = function() {
+                            Game.Launch();
+                            
+                            // Removed error frame check here
+                            console.log('[=== ' + choose([
+                                'Oh, hello!',
+                                'hey, how\'s it hangin',
+                                'About to cheat in some cookies or just checking for bugs?',
+                                'Remember : cheated cookies taste awful!',
+                                'Hey, Orteil here. Cheated cookies taste awful... or do they?',
+                            ]) + ' ===]');
+                            
+                            Game.Load(function() {
+                                Game.Init();
+                                if (firstLaunch) Game.showLangSelection(true);
+                            });
+                        }
+                        
+                        if (App && App.loadMods) App.loadMods(launch);
+                        else launch();
+                    });
+                }
+            }(lang));
+        }
+
+        var showLangSelect = function(callback) {
+            var str = '';
+            for (var i in Langs) {
+                var lang = Langs[i];
+                str += '<div class="langSelectButton title" id="langSelect-' + i + '">' + lang.name + '</div>';
+            }
+            l('offGameMessage').innerHTML =
+                '<div class="title" id="languageSelectHeader">Language</div>' +
+                '<div class="line" style="max-width:300px;"></div>' +
+                str;
+            for (var i in Langs) {
+                var lang = Langs[i];
+                AddEvent(l('langSelect-' + i), 'click', function(lang) {
+                    return function() {
+                        callback(lang);
+                    };
+                }(i));
+                AddEvent(l('langSelect-' + i), 'mouseover', function(lang) {
+                    return function() {
+                        PlaySound('snd/smallTick.mp3', 0.75);
+                        l('languageSelectHeader').innerHTML = Langs[lang].changeLanguage;
+                    };
+                }(i));
+            }
+        }
+
+        var lang = localStorageGet('CookieClickerLang');
+        if (App && !lang) showLangSelect(loadLangAndLaunch);
+        else if (!lang) {
+            loadLangAndLaunch('EN', true);
+        } else loadLangAndLaunch(lang);
+    }
 };
