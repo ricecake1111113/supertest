@@ -16857,30 +16857,28 @@ window.onload=function()
 		{
 			if (!firstLaunch) localStorageSet('CookieClickerLang',lang);
 			
-			//LoadLang('../Cookie Clicker Localization/EN.js',function(lang){return function(){
 			LoadLang('loc/EN.js?v='+Game.version,function(lang){return function(){
 				locStringsFallback=locStrings;
 				LoadLang('loc/'+lang+'.js?v='+Game.version,function(){
 					var launch=function(){
 						Game.Launch();
-						else
-						{
-							console.log('[=== '+choose([
-								'Oh, hello!',
-								'hey, how\'s it hangin',
-								'About to cheat in some cookies or just checking for bugs?',
-								'Remember : cheated cookies taste awful!',
-								'Hey, Orteil here. Cheated cookies taste awful... or do they?',
-							])+' ===]');
-							Game.Load(function(){Game.Init();if (firstLaunch) Game.showLangSelection(true);});
-							//try {Game.Load(Game.Init);}
-							//catch(err) {console.log('ERROR : '+err.message);}
-						}
+						// Removed the error frame check entirely
+						console.log('[=== '+choose([
+							'Oh, hello!',
+							'hey, how\'s it hangin',
+							'About to cheat in some cookies or just checking for bugs?',
+							'Remember : cheated cookies taste awful!',
+							'Hey, Orteil here. Cheated cookies taste awful... or do they?',
+						])+' ===]');
+						Game.Load(function(){
+							Game.Init();
+							if (firstLaunch) Game.showLangSelection(true);
+						});
 					}
 					if (App && App.loadMods) App.loadMods(launch);
 					else launch();
 				});
-			}}(lang));
+				}}(lang));
 		}
 		
 		var showLangSelect=function(callback)
