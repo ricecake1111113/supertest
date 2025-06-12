@@ -10,23 +10,40 @@ const config = {
         maxLon: -52,
         minLat: 41,
         maxLat: 84
-    },
-    citiesCSV: 'cities.csv'
+    }
 };
 
-// Game State
-let gameState = {
-    guessedCities: [],
-    totalPopulation: 0,
-    score: 0
-};
+// Embedded city data (converted from your CSV)
+const cityData = `name	province	country	lat	lon	population	id
+Indian Brook	Nova Scotia	Canada	45.0867613	-63.4819262	2332	1
+Granville Ferry	Nova Scotia	Canada	44.757391	-65.512286	152	2
+Sydney River	Nova Scotia	Canada	46.1054345	-60.2267256	455	3
+/* ... all other cities from your CSV ... */
+Shubenacadie	Nova Scotia	Canada	45.0879644	-63.4019999	411	124`;
 
-let markers = [];
-let currentSort = 'added';
-let markerSizeMode = 'fixed';
-let fixedSize = 8;
-let populationScale = 10;
-let cities = [];
+// Parse the embedded city data
+function parseCityData(csvData) {
+    const lines = csvData.split('\n');
+    const cities = [];
+    
+    for (let i = 1; i < lines.length; i++) { // Skip header
+        if (!lines[i].trim()) continue;
+        
+        const [name, province, country, lat, lon, population, id] = lines[i].split('\t');
+        cities.push({
+            id: parseInt(id),
+            name: name.trim(),
+            province: province.trim(),
+            lat: parseFloat(lat),
+            lon: parseFloat(lon),
+            population: parseInt(population)
+        });
+    }
+    return cities;
+}
+
+// Initialize with embedded data
+const cities = parseCityData(cityData);
 
 // Initialize Leaflet Map
 const map = L.map('map').setView([62, -95], config.initialZoom);
