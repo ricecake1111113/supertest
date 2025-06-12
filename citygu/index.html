@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nova Scotia City Guesser</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Nova Scotia City Guesser</h1>
+        
+        <div class="game-controls">
+            <input type="text" id="city-input" placeholder="Type a Nova Scotia city..." autocomplete="off">
+            <button id="import-csv">Import CSV</button>
+            <input type="file" id="csv-file" accept=".csv" style="display: none;">
+        </div>
+
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+
+        <div class="stats-panel">
+            <div>Cities Guessed: <span id="count">0</span></div>
+            <div>Population Covered: <span id="population">0</span></div>
+            <div>Score: <span id="score">0</span></div>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
