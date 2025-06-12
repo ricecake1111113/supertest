@@ -78,3 +78,44 @@ button:hover {
     height: 10px;
     display: block;
 }
+.settings {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.settings label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.size-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#population-slider {
+    width: 100px;
+}
+
+/* Make the map container taller to accommodate controls */
+#map-container {
+    height: 500px;
+    margin: 20px 0;
+}
+
+/* Add some responsive design */
+@media (max-width: 768px) {
+    .game-controls {
+        flex-direction: column;
+    }
+    
+    .settings {
+        flex-wrap: wrap;
+    }
+}

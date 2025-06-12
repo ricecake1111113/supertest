@@ -1,18 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nova Scotia City Guesser</title>
+    <title>City Guesser</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
     <div class="container">
-        <h1>Nova Scotia City Guesser</h1>
+        <h1>City Guesser</h1>
         
         <div class="game-controls">
-            <input type="text" id="city-input" placeholder="Type a Nova Scotia city..." autocomplete="off">
+            <input type="text" id="city-input" placeholder="Type a city..." autocomplete="off">
             <button id="import-csv">Import CSV</button>
             <input type="file" id="csv-file" accept=".csv" style="display: none;">
+            
+            <div class="settings">
+                <label>Marker Size:</label>
+                <select id="marker-size">
+                    <option value="fixed">Fixed Size</option>
+                    <option value="population">By Population</option>
+                </select>
+                <select id="fixed-size" class="size-option">
+                    <option value="5">Small</option>
+                    <option value="8" selected>Medium</option>
+                    <option value="12">Large</option>
+                </select>
+                <div id="population-scale" class="size-option" style="display:none">
+                    <label>Scale: </label>
+                    <input type="range" id="population-slider" min="1" max="20" value="10">
+                </div>
+            </div>
         </div>
 
         <div id="map-container">
@@ -26,6 +43,15 @@
         </div>
 
         <div id="message"></div>
+
+        <div class="city-list-container">
+            <div class="sort-controls">
+                <button id="sort-alpha">A-Z</button>
+                <button id="sort-population">Population</button>
+                <button id="sort-added">Added Order</button>
+            </div>
+            <div id="city-list"></div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
