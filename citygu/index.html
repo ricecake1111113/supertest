@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>City Guesser</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Canadian City Guesser</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>City Guesser</h1>
+        <h1>Canadian City Guesser</h1>
         
         <div class="game-controls">
-            <input type="text" id="city-input" placeholder="Type a city..." autocomplete="off">
-            <button id="import-csv">Import CSV</button>
-            <input type="file" id="csv-file" accept=".csv" style="display: none;">
+            <input type="text" id="city-input" placeholder="Type any Canadian city..." autocomplete="off">
+            <button id="reset-btn">Reset Progress</button>
             
             <div class="settings">
                 <label>Marker Size:</label>
@@ -45,9 +44,11 @@
         <div id="message"></div>
 
         <div class="city-list-container">
+            <h3>Guessed Cities</h3>
             <div class="sort-controls">
                 <button id="sort-alpha">A-Z</button>
                 <button id="sort-population">Population</button>
+                <button id="sort-province">Province</button>
                 <button id="sort-added">Added Order</button>
             </div>
             <div id="city-list"></div>

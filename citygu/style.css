@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     background-color: #f5f5f5;
@@ -14,13 +14,13 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-h1 {
+h1, h3 {
     color: #2c3e50;
     text-align: center;
 }
 
 #map {
-    height: 600px;
+    height: 500px;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin: 20px 0;
@@ -30,12 +30,14 @@ h1 {
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
+    flex-wrap: wrap;
 }
 
 #city-input {
     flex-grow: 1;
     padding: 10px;
     font-size: 16px;
+    min-width: 200px;
 }
 
 button {
@@ -51,6 +53,14 @@ button:hover {
     background: #2980b9;
 }
 
+#reset-btn {
+    background: #e74c3c;
+}
+
+#reset-btn:hover {
+    background: #c0392b;
+}
+
 .stats-panel {
     display: flex;
     justify-content: space-around;
@@ -60,24 +70,59 @@ button:hover {
     margin-bottom: 15px;
 }
 
-.stats-panel div {
-    font-weight: bold;
-}
-
 #message {
     min-height: 20px;
     text-align: center;
     font-weight: bold;
     margin: 10px 0;
+    color: #e74c3c;
 }
 
-.city-marker {
-    background: #e74c3c;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    display: block;
+.city-list-container {
+    margin-top: 20px;
 }
+
+.sort-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+#city-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.city-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+}
+
+.city-item:hover {
+    background-color: #f5f5f5;
+}
+
+.city-item.highlighted {
+    background-color: #e3f2fd;
+    font-weight: bold;
+}
+
+.city-item span:first-child {
+    flex-grow: 1;
+}
+
+.city-population {
+    color: #666;
+    font-size: 0.9em;
+    min-width: 80px;
+    text-align: right;
+}
+
 .settings {
     display: flex;
     align-items: center;
@@ -86,11 +131,11 @@ button:hover {
     padding: 10px;
     background: #f8f9fa;
     border-radius: 4px;
+    flex-wrap: wrap;
 }
 
 .settings label {
     font-weight: bold;
-    margin-right: 5px;
 }
 
 .size-option {
@@ -103,19 +148,12 @@ button:hover {
     width: 100px;
 }
 
-/* Make the map container taller to accommodate controls */
-#map-container {
-    height: 500px;
-    margin: 20px 0;
-}
-
-/* Add some responsive design */
 @media (max-width: 768px) {
-    .game-controls {
+    .game-controls, .sort-controls {
         flex-direction: column;
     }
     
-    .settings {
-        flex-wrap: wrap;
+    #city-input {
+        width: 100%;
     }
 }

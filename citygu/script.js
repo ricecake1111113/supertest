@@ -2,22 +2,34 @@
 const config = {
     baseScorePerCity: 10,
     populationMultiplier: 0.001,
-    initialZoom: 7,
-    mapStyle: 'satellite' // 'satellite' or 'streets'
+    initialZoom: 5,
+    mapStyle: 'satellite',
+    storageKey: 'canadaCityGuesserSave',
+    mapBounds: {
+        minLon: -141,
+        maxLon: -52,
+        minLat: 41,
+        maxLat: 84
+    },
+    citiesCSV: 'cities.csv'
 };
 
 // Game State
-let guessedCities = [];
-let totalPopulation = 0;
-let score = 0;
+let gameState = {
+    guessedCities: [],
+    totalPopulation: 0,
+    score: 0
+};
+
 let markers = [];
 let currentSort = 'added';
 let markerSizeMode = 'fixed';
 let fixedSize = 8;
 let populationScale = 10;
+let cities = [];
 
 // Initialize Leaflet Map
-const map = L.map('map').setView([44.5, -63.5], config.initialZoom);
+const map = L.map('map').setView([62, -95], config.initialZoom);
 
 // Map Layers
 const baseLayers = {
@@ -32,33 +44,109 @@ const baseLayers = {
 baseLayers[config.mapStyle === 'satellite' ? 'Satellite' : 'Streets'].addTo(map);
 
 // DOM Elements
-const cityInput = document.getElementById('city-input');
-const countDisplay = document.getElementById('count');
-const populationDisplay = document.getElementById('population');
-const scoreDisplay = document.getElementById('score');
-const messageDiv = document.getElementById('message');
-const csvFileInput = document.getElementById('csv-file');
-const importCsvBtn = document.getElementById('import-csv');
-const markerSizeSelect = document.getElementById('marker-size');
-const fixedSizeSelect = document.getElementById('fixed-size');
-const populationScaleDiv = document.getElementById('population-scale');
-const populationSlider = document.getElementById('population-slider');
+const elements = {
+    cityInput: document.getElementById('city-input'),
+    countDisplay: document.getElementById('count'),
+    populationDisplay: document.getElementById('population'),
+    scoreDisplay: document.getElementById('score'),
+    messageDiv: document.getElementById('message'),
+    resetBtn: document.getElementById('reset-btn'),
+    markerSizeSelect: document.getElementById('marker-size'),
+    fixedSizeSelect: document.getElementById('fixed-size'),
+    populationScaleDiv: document.getElementById('population-scale'),
+    populationSlider: document.getElementById('population-slider'),
+    cityList: document.getElementById('city-list'),
+    sortAlpha: document.getElementById('sort-alpha'),
+    sortPopulation: document.getElementById('sort-population'),
+    sortProvince: document.getElementById('sort-province'),
+    sortAdded: document.getElementById('sort-added')
+};
 
-// Sample Nova Scotia Cities Data
-let cities = [
-    { id: 11, name: "Halifax", lat: 44.65107, lon: -63.582687, population: 348634 },
-    { id: 38, name: "Sydney", lat: 46.136389, lon: -60.195556, population: 30960 },
-    // ... Add all other cities from your CSV
-];
-
-// Initialize Game
-function initGame() {
-    updateStats();
-    setupEventListeners();
-    updateMarkerSizeControls();
+// Load cities from CSV
+async function loadCitiesFromCSV() {
+    try {
+        const response = await fetch(config.citiesCSV);
+        const csvData = await response.text();
+        const lines = csvData.split('\n');
+        
+        cities = [];
+        lines.forEach((line, index) => {
+            if (!line.trim() || index === 0) return; // Skip header and empty lines
+            
+            const [name, province, country, lat, lon, population, id] = line.split('\t');
+            cities.push({
+                id: parseInt(id),
+                name: name.trim(),
+                province: province.trim(),
+                lat: parseFloat(lat),
+                lon: parseFloat(lon),
+                population: parseInt(population)
+            });
+        });
+        
+        console.log(`Loaded ${cities.length} cities from CSV`);
+    } catch (error) {
+        console.error("Error loading cities:", error);
+        showMessage("Failed to load city data. Please try again later.", "error");
+    }
 }
 
-// Plot a city on the map
+// Save game state
+function saveGameState() {
+    localStorage.setItem(config.storageKey, JSON.stringify(gameState));
+}
+
+// Load game state
+function loadGameState() {
+    const savedState = localStorage.getItem(config.storageKey);
+    if (savedState) {
+        gameState = JSON.parse(savedState);
+        gameState.guessedCities.forEach(cityId => {
+            const city = cities.find(c => c.id === cityId);
+            if (city) plotCity(city);
+        });
+        updateStats();
+    }
+}
+
+// Reset game
+function resetGame() {
+    if (confirm("Are you sure you want to reset all progress?")) {
+        gameState = { guessedCities: [], totalPopulation: 0, score: 0 };
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+        saveGameState();
+        updateStats();
+        updateCityList();
+        showMessage("Game progress has been reset", "success");
+    }
+}
+
+// Find city with flexible matching
+function findCity(input) {
+    const normalizedInput = input.toLowerCase().trim();
+    const [cityPart, provincePart] = normalizedInput.split(/,|\s+/).map(s => s.trim());
+    
+    // Try exact match first
+    let foundCity = cities.find(c => 
+        c.name.toLowerCase() === normalizedInput ||
+        `${c.name.toLowerCase()}, ${c.province.toLowerCase()}` === normalizedInput
+    );
+    
+    // Try partial matches
+    if (!foundCity) {
+        foundCity = cities.find(c => 
+            c.name.toLowerCase().includes(normalizedInput) ||
+            normalizedInput.includes(c.name.toLowerCase()) ||
+            (cityPart && c.name.toLowerCase().includes(cityPart) &&
+             (!provincePart || c.province.toLowerCase().includes(provincePart)))
+        );
+    }
+    
+    return foundCity;
+}
+
+// Plot city on map
 function plotCity(city) {
     const radius = calculateMarkerSize(city.population);
     
@@ -72,141 +160,116 @@ function plotCity(city) {
         cityId: city.id
     }).addTo(map);
 
-    marker.bindPopup(`<b>${city.name}</b><br>Population: ${city.population.toLocaleString()}`);
+    marker.bindPopup(`<b>${city.name}, ${city.province}</b><br>Population: ${city.population.toLocaleString()}`);
     markers.push(marker);
-    updateCityList();
 }
 
+// Calculate marker size
 function calculateMarkerSize(population) {
     if (markerSizeMode === 'population') {
-        // Logarithmic scale to handle large population differences
         const minSize = 3;
         const maxSize = 20;
         const minPop = 100;
-        const maxPop = 500000;
+        const maxPop = 3000000;
         
         const scale = Math.log10(population / minPop) / Math.log10(maxPop / minPop);
         return minSize + (maxSize - minSize) * Math.min(Math.max(scale, 0), 1) * (populationScale / 10);
-    } else {
-        return fixedSize;
     }
+    return fixedSize;
 }
 
+// Update marker sizes
 function updateAllMarkerSizes() {
     markers.forEach(marker => {
         const city = cities.find(c => c.id === marker.options.cityId);
-        if (city) {
-            marker.setRadius(calculateMarkerSize(city.population));
-        }
+        if (city) marker.setRadius(calculateMarkerSize(city.population));
     });
 }
 
+// Update marker size controls
 function updateMarkerSizeControls() {
-    if (markerSizeSelect.value === 'fixed') {
-        fixedSizeSelect.style.display = 'block';
-        populationScaleDiv.style.display = 'none';
+    if (elements.markerSizeSelect.value === 'fixed') {
+        elements.fixedSizeSelect.style.display = 'block';
+        elements.populationScaleDiv.style.display = 'none';
         markerSizeMode = 'fixed';
-        fixedSize = parseInt(fixedSizeSelect.value);
+        fixedSize = parseInt(elements.fixedSizeSelect.value);
     } else {
-        fixedSizeSelect.style.display = 'none';
-        populationScaleDiv.style.display = 'flex';
+        elements.fixedSizeSelect.style.display = 'none';
+        elements.populationScaleDiv.style.display = 'flex';
         markerSizeMode = 'population';
-        populationScale = parseInt(populationSlider.value);
+        populationScale = parseInt(elements.populationSlider.value);
     }
     updateAllMarkerSizes();
 }
 
-// Update game statistics
-function updateStats() {
-    countDisplay.textContent = guessedCities.length;
-    populationDisplay.textContent = totalPopulation.toLocaleString();
-    scoreDisplay.textContent = score.toLocaleString();
-}
-
-// Show temporary message
-function showMessage(msg, type = 'info') {
-    messageDiv.textContent = msg;
-    messageDiv.className = type;
-    setTimeout(() => messageDiv.textContent = '', 3000);
-}
-
-// Calculate score based on population
-function calculateScore(population) {
-    return Math.floor(config.baseScorePerCity + (population * config.populationMultiplier));
-}
-
-// Handle city guessing
+// Handle city guess
 function handleCityGuess() {
-    const cityName = cityInput.value.trim();
-    if (!cityName) return;
+    const userInput = elements.cityInput.value.trim();
+    if (!userInput) return;
 
-    const foundCity = cities.find(c => 
-        c.name.toLowerCase() === cityName.toLowerCase()
-    );
+    const foundCity = findCity(userInput);
 
     if (foundCity) {
-        if (!guessedCities.some(c => c.id === foundCity.id)) {
-            guessedCities.push({
-                id: foundCity.id,
-                name: foundCity.name,
-                population: foundCity.population
-            });
-            totalPopulation += foundCity.population;
-            score += calculateScore(foundCity.population);
+        if (!gameState.guessedCities.includes(foundCity.id)) {
+            gameState.guessedCities.push(foundCity.id);
+            gameState.totalPopulation += foundCity.population;
+            gameState.score += calculateScore(foundCity.population);
             plotCity(foundCity);
             updateStats();
-            showMessage(`Correct! ${foundCity.name} added.`, 'success');
+            updateCityList();
+            saveGameState();
+            showMessage(`Correct! ${foundCity.name}, ${foundCity.province} added.`, 'success');
         } else {
             showMessage(`${foundCity.name} was already guessed!`, 'error');
         }
     } else {
-        showMessage("City not found in Nova Scotia!", 'error');
+        showMessage("City not found! Try including province (e.g., 'Toronto, Ontario')", 'error');
     }
-    cityInput.value = '';
+    elements.cityInput.value = '';
 }
 
-// Import cities from CSV
-function importCitiesFromCSV(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const csvData = e.target.result;
-        const lines = csvData.split('\n');
-        cities = [];
-        
-        lines.slice(1).forEach(line => {
-            if (!line.trim()) return;
-            const [name, province, country, lat, lon, population, id] = line.split('\t');
-            cities.push({
-                id: parseInt(id),
-                name: name.trim(),
-                lat: parseFloat(lat),
-                lon: parseFloat(lon),
-                population: parseInt(population)
-            });
-        });
-        
-        showMessage(`Loaded ${cities.length} cities from CSV`, 'success');
-    };
-    reader.readAsText(file);
+// Calculate score
+function calculateScore(population) {
+    return Math.floor(config.baseScorePerCity + (population * config.populationMultiplier));
+}
+
+// Update stats
+function updateStats() {
+    elements.countDisplay.textContent = gameState.guessedCities.length;
+    elements.populationDisplay.textContent = gameState.totalPopulation.toLocaleString();
+    elements.scoreDisplay.textContent = gameState.score.toLocaleString();
+}
+
+// Show message
+function showMessage(msg, type = 'info') {
+    elements.messageDiv.textContent = msg;
+    elements.messageDiv.style.color = type === 'error' ? '#e74c3c' : type === 'success' ? '#2ecc71' : '#3498db';
+    setTimeout(() => elements.messageDiv.textContent = '', 3000);
 }
 
 // Update city list
 function updateCityList() {
-    const cityList = document.getElementById('city-list');
-    cityList.innerHTML = '';
+    elements.cityList.innerHTML = '';
 
-    // Sort cities
-    const sortedCities = [...guessedCities];
+    const guessedCityObjects = gameState.guessedCities.map(id => 
+        cities.find(c => c.id === id)
+    ).filter(c => c);
+
+    let sortedCities;
     switch(currentSort) {
         case 'alpha':
-            sortedCities.sort((a, b) => a.name.localeCompare(b.name));
+            sortedCities = [...guessedCityObjects].sort((a, b) => a.name.localeCompare(b.name));
             break;
         case 'population':
-            sortedCities.sort((a, b) => b.population - a.population);
+            sortedCities = [...guessedCityObjects].sort((a, b) => b.population - a.population);
+            break;
+        case 'province':
+            sortedCities = [...guessedCityObjects].sort((a, b) => 
+                a.province.localeCompare(b.province) || a.name.localeCompare(b.name));
             break;
         case 'added':
         default:
-            // Already in added order
+            sortedCities = guessedCityObjects;
             break;
     }
 
@@ -216,18 +279,17 @@ function updateCityList() {
         item.dataset.cityId = city.id;
         
         item.innerHTML = `
-            <span>${city.name}</span>
+            <span>${city.name}, ${city.province}</span>
             <span class="city-population">${city.population.toLocaleString()}</span>
         `;
         
         item.addEventListener('click', () => highlightCity(city.id));
-        cityList.appendChild(item);
+        elements.cityList.appendChild(item);
     });
 }
 
-// Highlight city on map
+// Highlight city
 function highlightCity(cityId) {
-    // Remove all highlights
     document.querySelectorAll('.city-item').forEach(item => {
         item.classList.remove('highlighted');
     });
@@ -235,7 +297,6 @@ function highlightCity(cityId) {
         marker.setStyle({color: '#c0392b'});
     });
 
-    // Find and highlight the selected city
     const cityItem = document.querySelector(`.city-item[data-city-id="${cityId}"]`);
     if (cityItem) {
         cityItem.classList.add('highlighted');
@@ -250,43 +311,49 @@ function highlightCity(cityId) {
     }
 }
 
-// Set up event listeners
+// Setup event listeners
 function setupEventListeners() {
-    cityInput.addEventListener('keypress', (e) => {
+    elements.cityInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleCityGuess();
     });
 
-    importCsvBtn.addEventListener('click', () => {
-        csvFileInput.click();
-    });
+    elements.resetBtn.addEventListener('click', resetGame);
 
-    csvFileInput.addEventListener('change', (e) => {
-        if (e.target.files.length) {
-            importCitiesFromCSV(e.target.files[0]);
-        }
-    });
-
-    document.getElementById('sort-alpha').addEventListener('click', () => {
+    elements.sortAlpha.addEventListener('click', () => {
         currentSort = 'alpha';
         updateCityList();
     });
     
-    document.getElementById('sort-population').addEventListener('click', () => {
+    elements.sortPopulation.addEventListener('click', () => {
         currentSort = 'population';
         updateCityList();
     });
     
-    document.getElementById('sort-added').addEventListener('click', () => {
+    elements.sortProvince.addEventListener('click', () => {
+        currentSort = 'province';
+        updateCityList();
+    });
+    
+    elements.sortAdded.addEventListener('click', () => {
         currentSort = 'added';
         updateCityList();
     });
 
-    markerSizeSelect.addEventListener('change', updateMarkerSizeControls);
-    fixedSizeSelect.addEventListener('change', updateMarkerSizeControls);
-    populationSlider.addEventListener('input', () => {
-        populationScale = parseInt(populationSlider.value);
+    elements.markerSizeSelect.addEventListener('change', updateMarkerSizeControls);
+    elements.fixedSizeSelect.addEventListener('change', updateMarkerSizeControls);
+    elements.populationSlider.addEventListener('input', () => {
+        populationScale = parseInt(elements.populationSlider.value);
         updateAllMarkerSizes();
     });
+}
+
+// Initialize game
+async function initGame() {
+    await loadCitiesFromCSV();
+    setupEventListeners();
+    updateMarkerSizeControls();
+    loadGameState();
+    updateCityList();
 }
 
 // Start the game
