@@ -157,3 +157,7 @@ button:hover {
         width: 100%;
     }
 }
+
+.leaflet-container {
+    background: #fff !important;
+}

@@ -1,3 +1,4 @@
+name,province,country,lat,lon,population,id
 Indian Brook,Nova Scotia,Canada,45.0867613,-63.4819262,2332,1
 Granville Ferry,Nova Scotia,Canada,44.757391,-65.512286,152,2
 Sydney River,Nova Scotia,Canada,46.1054345,-60.2267256,455,3
@@ -56,69 +57,4 @@ Amherst,Nova Scotia,Canada,45.8344395,-64.2123394,9548,55
 Liverpool,Nova Scotia,Canada,44.0329772,-64.7176783,2546,56
 Port Hawkesbury,Nova Scotia,Canada,45.615278,-61.364167,3210,57
 Brookside,Nova Scotia,Canada,44.5480794,-63.721634,1439,58
-Florence,Nova Scotia,Canada,46.277656,-60.264031,1344,59
-Hebbville,Nova Scotia,Canada,44.351018,-64.539282,796,60
-Canso,Nova Scotia,Canada,45.3362846,-60.9944422,733,61
-Port Caledonia,Nova Scotia,Canada,46.1744768,-59.9157768,212,62
-Baddeck,Nova Scotia,Canada,46.1,-60.754167,818,63
-Hantsport,Nova Scotia,Canada,45.0640937,-64.1809348,1542,64
-Brookfield,Nova Scotia,Canada,45.25,-63.283,439,65
-Groves Point,Nova Scotia,Canada,46.2345777,-60.3336689,254,66
-Inverness,Nova Scotia,Canada,46.2308276,-61.3043828,1228,67
-Oxford,Nova Scotia,Canada,45.7362454,-63.8674353,1170,68
-Still Water Lake,Nova Scotia,Canada,44.6966255,-63.8286727,3379,69
-Canning,Nova Scotia,Canada,45.157917,-64.424167,716,70
-Hammonds Plains Road,Nova Scotia,Canada,44.726324,-63.744009,1819,71
-New Germany,Nova Scotia,Canada,44.5455456,-64.7287632,447,72
-Westville,Nova Scotia,Canada,45.5564449,-62.715484,3540,73
-Berwick,Nova Scotia,Canada,45.0455356,-64.7361374,2455,74
-Pictou,Nova Scotia,Canada,45.6761282,-62.708845,2643,75
-Sydney Forks,Nova Scotia,Canada,46.069419,-60.281294,498,76
-Cow Bay,Nova Scotia,Canada,44.620833,-63.425556,1224,77
-Freeport,Nova Scotia,Canada,44.2796183,-66.3177176,217,78
-Enfield,Nova Scotia,Canada,44.943333,-63.535833,36,79
-Trenton,Nova Scotia,Canada,45.6100845,-62.637958,2407,80
-Digby,Nova Scotia,Canada,44.61999752,-65.75633031,2001,81
-Shelburne,Nova Scotia,Canada,43.7632855,-65.3235168,1439,82
-Springhill,Nova Scotia,Canada,45.6486482,-64.0599649,2654,83
-Sydney Mines,Nova Scotia,Canada,46.242536,-60.226947,12353,84
-Priestville,Nova Scotia,Canada,45.572197,-62.628192,157,85
-Glace Bay,Nova Scotia,Canada,46.2,-59.966667,16915,86
-Mill Creek,Nova Scotia,Canada,45.766667,-64.3833329,413,87
-George's River,Nova Scotia,Canada,46.200686,-60.340347,603,88
-Clark's Harbour,Nova Scotia,Canada,43.4477585,-65.6385722,725,89
-Howie Centre,Nova Scotia,Canada,46.064804,-60.264975,1106,90
-Coldbrook,Nova Scotia,Canada,45.05,-64.583333,1206,91
-Upper North Sydney,Nova Scotia,Canada,46.1934064,-60.2681578,387,92
-Alder Point,Nova Scotia,Canada,46.308047,-60.285417,461,93
-Stellarton,Nova Scotia,Canada,45.5568366,-62.6603397,4007,94
-Masstown,Nova Scotia,Canada,45.3746282,-63.4671363,156,95
-Waterville,Nova Scotia,Canada,45.048631,-64.676373,703,96
-Louisbourg,Nova Scotia,Canada,45.9221352,-59.9713119,825,97
-Lake Echo,Nova Scotia,Canada,44.7384134,-63.3803286,2365,98
-Windsor,Nova Scotia,Canada,44.9902861,-64.1310364,3425,99
-Port Williams,Nova Scotia,Canada,45.0979976,-64.4100234,1110,100
-Carleton,Nova Scotia,Canada,43.660556,-65.332778,99,101
-Carleton Corner,Nova Scotia,Canada,44.816667,-65.283333,99,102
-Milton Highlands,Nova Scotia,Canada,43.851891,-66.122203,320,103
-Hayes Subdivision,Nova Scotia,Canada,45.055404,-64.589907,1041,104
-Brooklyn,Nova Scotia,Canada,44.052619,-64.689136,849,105
-Wallace,Nova Scotia,Canada,45.812767,-63.470078,190,106
-Little Pond,Nova Scotia,Canada,46.2833484,-60.2666047,169,107
-Bras D'or,Nova Scotia,Canada,46.249444,-60.283611,96,108
-English Corner,Nova Scotia,Canada,44.739,-63.785,1058,109
-Tatamagouche,Nova Scotia,Canada,45.7092048,-63.2941871,691,110
-Havre Boucher,Nova Scotia,Canada,45.6809129,-61.539024,281,111
-New Waterford,Nova Scotia,Canada,46.252222,-60.093889,6723,112
-Terrence Bay,Nova Scotia,Canada,44.4700781,-63.7215471,678,113
-North Sydney,Nova Scotia,Canada,46.207061,-60.2540719,5121,114
-Lockeport,Nova Scotia,Canada,43.6997753,-65.1137196,476,115
-Westport,Nova Scotia,Canada,44.2617409,-66.3547365,193,116
-Lingan,Nova Scotia,Canada,46.2337906,-60.0441653,229,117
-Mulgrave,Nova Scotia,Canada,45.613333,-61.391667,627,118
-Point Aconi,Nova Scotia,Canada,46.316667,-60.3,113,119
-Lequille,Nova Scotia,Canada,44.727964,-65.49049,182,120
-Hillside,Nova Scotia,Canada,46.014075,-60.147898,122,121
-Cambridge,Nova Scotia,Canada,45.05,-64.633333,703,122
-Lantz,Nova Scotia,Canada,44.987222,-63.479167,1703,123
-Shubenacadie,Nova Scotia,Canada,45.0879644,-63.4019999,411,124
+Fl,,,,,,

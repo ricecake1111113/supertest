@@ -27,21 +27,16 @@ let markerSizeMode = 'fixed';
 let fixedSize = 8;
 let populationScale = 10;
 let cities = [];
+let map;
 
 // Initialize Leaflet Map
-const map = L.map('map').setView([62, -95], config.initialZoom);
+function initMap() {
+    map = L.map('map').setView([62, -95], config.initialZoom);
 
-// Map Layers
-const baseLayers = {
-    'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics'
-    }),
-    'Streets': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    })
-};
-
-baseLayers[config.mapStyle === 'satellite' ? 'Satellite' : 'Streets'].addTo(map);
+    }).addTo(map);
+}
 
 // DOM Elements
 const elements = {
@@ -73,9 +68,9 @@ async function loadCitiesFromCSV() {
         const lines = csvData.split('\n');
         
         cities = [];
-        for (let i = 0; i < lines.length; i++) {
+        for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
-            if (!line || line.startsWith('name\t')) continue; // Skip header and empty lines
+            if (!line) continue;
             
             const [name, province, country, lat, lon, population, id] = line.split('\t');
             cities.push({
@@ -145,7 +140,7 @@ function findCity(input) {
             c.name.toLowerCase().includes(normalizedInput) ||
             normalizedInput.includes(c.name.toLowerCase()) ||
             (cityPart && c.name.toLowerCase().includes(cityPart) &&
-            (!provincePart || c.province.toLowerCase().includes(provincePart))
+             (!provincePart || c.province.toLowerCase().includes(provincePart)))
         );
     }
     
@@ -355,6 +350,8 @@ function setupEventListeners() {
 
 // Initialize game
 async function initGame() {
+    initMap(); // Initialize map first
+    
     const loaded = await loadCitiesFromCSV();
     if (!loaded) return;
     
@@ -370,7 +367,3 @@ async function initGame() {
 
 // Start the game
 initGame();
-
-// Disable input until cities load
-elements.cityInput.disabled = true;
-elements.cityInput.placeholder = "Loading city data...";
