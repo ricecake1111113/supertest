@@ -31,7 +31,7 @@ let cities = [];
 let map;
 let baseLayers = {};
 
-// DOM Elements
+// elements
 const elements = {
     cityInput: document.getElementById('city-input'),
     countDisplay: document.getElementById('count'),
@@ -49,8 +49,7 @@ const elements = {
     sortProvince: document.getElementById('sort-province'),
     sortAdded: document.getElementById('sort-added')
 };
-
-// Initialize Leaflet Map
+// initalize map
 function initMap() {
     map = L.map('map', {
         zoomControl: false,
@@ -58,7 +57,7 @@ function initMap() {
         maxBoundsViscosity: 1.0
     }).setView([62, -95], config.initialZoom);
 
-    // Define base layers (both without labels)
+// define layers
     baseLayers = {
         "Street Map": L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -70,21 +69,21 @@ function initMap() {
         })
     };
 
-    // Add default layer
+    // default layer
     baseLayers["Street Map"].addTo(map);
 
-    // Add zoom control
+    // zoom control
     L.control.zoom({
         position: 'topright'
     }).addTo(map);
 
-    // Add layer control
+    // layer control
     L.control.layers(baseLayers, null, {
         position: 'topright'
     }).addTo(map);
 }
 
-// Show message function
+// message function
 function showMessage(msg, type = 'info') {
     elements.messageDiv.textContent = msg;
     elements.messageDiv.className = `message ${type}`;
@@ -157,7 +156,7 @@ function plotCity(city) {
     return marker;
 }
 
-// Calculate marker size
+// marker siz
 function calculateMarkerSize(population) {
     if (markerSizeMode === 'population') {
         const minSize = 3;
@@ -178,7 +177,7 @@ function updateAllMarkerSizes() {
     });
 }
 
-// Update marker size controls visibility
+// marker size controls visibility
 function updateMarkerSizeControls() {
     markerSizeMode = elements.markerSizeSelect.value;
     
@@ -194,7 +193,7 @@ function updateMarkerSizeControls() {
     updateAllMarkerSizes();
 }
 
-// Strict city matching that requires exact names
+// Strict city matching that requires exact names (thanks chatgpt)
 function findCity(input) {
     const normalizedInput = input.trim().toLowerCase();
     const [cityPart, provincePart] = normalizedInput.split(/,|\s+/).map(s => s.trim());
@@ -220,14 +219,14 @@ function findCity(input) {
     return null;
 }
 
-// Normalize strings by removing accents/diacritics
+// Normalize strings by removing accents/diacritics ------- must fix this area and the findcity function
 function normalizeString(str) {
     return str.normalize("NFD")
               .replace(/[\u0300-\u036f]/g, "") // Remove accents
               .replace(/\s+/g, ' ').trim();    // Normalize spaces
 }
 
-// Handle city guess
+// city guess handle
 function handleCityGuess() {
     const userInput = elements.cityInput.value.trim();
     if (!userInput) return;
@@ -255,17 +254,17 @@ function handleCityGuess() {
     elements.cityInput.value = '';
 }
 
-// Calculate score
+// score
 function calculateScore(population) {
     return Math.floor(config.baseScorePerCity + (population * config.populationMultiplier));
 }
 
-// Save game state
+// Save state
 function saveGameState() {
     localStorage.setItem(config.storageKey, JSON.stringify(gameState));
 }
 
-// Load game state
+// Load state
 function loadGameState() {
     const savedState = localStorage.getItem(config.storageKey);
     if (savedState) {
@@ -285,7 +284,7 @@ function updateStats() {
     elements.scoreDisplay.textContent = gameState.score.toLocaleString();
 }
 
-// Remove city from game
+// Remove city
 function removeCity(cityId) {
     const cityIndex = gameState.guessedCities.indexOf(cityId);
     if (cityIndex !== -1) {
