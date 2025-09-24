@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CityGuessr</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" />
+</head>
+<body>
+  <div id="controls">
+    <label for="provinceSelect">Province:</label>
+    <select id="provinceSelect">
+      <option value="ANY">ANY PROVINCE</option>
+      <option value="NS">Nova Scotia</option>
+      <option value="NB">New Brunswick</option>
+      <option value="PE">Prince Edward Island</option>
+      <option value="NL">Newfoundland and Labrador</option>
+    </select>
+
+    <input type="text" id="cityInput" placeholder="Enter city name..." />
+    <button id="submitCity">Submit</button>
+
+    <label for="markerSizeSlider">Marker Size:</label>
+    <input type="range" id="markerSizeSlider" min="2" max="30" value="10" />
+
+    <div id="colorPicker">
+      <div class="color-circle" data-color="red"></div>
+      <div class="color-circle" data-color="blue"></div>
+      <div class="color-circle" data-color="green"></div>
+      <div class="color-circle" data-color="yellow"></div>
+      <div class="color-circle" data-color="black"></div>
+      <div class="color-circle" data-color="rainbow"></div>
+    </div>
+
+    <label for="darkModeToggle">Dark Mode:</label>
+    <input type="checkbox" id="darkModeToggle" />
+  </div>
+
+  <div id="map"></div>
+
+  <div id="cityList">
+    <div id="cityListHeaders">
+      <button id="sortByName">City Name</button>
+      <button id="sortByPopulation">Population</button>
+      <button id="sortByProvince">Province</button>
+    </div>
+    <ul id="guessedCitiesList"></ul>
+  </div>
+
+  <div id="achievements">
+    <h3>Achievements</h3>
+    <div class="achievement" id="bronze">🥉<span> Enter 50 cities</span></div>
+    <div class="achievement" id="silver">🥈<span> Enter 100 cities</span></div>
+    <div class="achievement" id="gold">🥇<span> Enter 250 cities</span></div>
+    <div class="achievement" id="platinum">🏆<span> Enter 500 cities</span></div>
+  </div>
+
+  <footer>
+    <p>CityGuessr by ricecake1111113 – Version 1.0</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
