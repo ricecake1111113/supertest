@@ -577,10 +577,10 @@ class Game {
                 <p>
                     EPSTEIN ALWAYS STARTS AT CAM 11. USE THE CAMERA'S AUDIO LURE TO KEEP EPSTEIN FAR AWAY FROM YOU. 
                     MAKE SURE THE CAMERA YOU'RE PLAYING THE SOUND IN IS NEXT TO THE CAMERA WHERE EPSTEIN IS. 
-                    PLAYING SOUND IN ONLY ONE SPOT WILL NOT WORK IF YOU DO IT TWICE OR MORE IN A ROW. 
                     USING THE AUDIO LURE TOO MUCH WILL LEAD TO THE CAMERAS BREAKING. 
                     TO FIX THEM HEAD TO THE CONTROL PANEL AND RESTART THE CAMERAS LIKE YOU JUST DID. 
-                    EPSTEIN DOES NOT ATTACK THROUGH THE VENTS SO DON'T BOTHER CLOSING THEM FOR THIS NIGHT.
+                    EPSTEIN DOES NOT ATTACK THROUGH THE VENTS SO DON'T BOTHER CLOSING THEM FOR THIS NIGHT. 
+                    EPSTEIN WILL APPEAR AT 2:00 AM ON NIGHT 1.
                 </p>
                 <button id="tutorial-got-it">GOT IT</button>
             `;
@@ -626,7 +626,7 @@ class Game {
         
         // 创建金色霍金图片
         const goldenImg = document.createElement('img');
-        goldenImg.src = '/fnae/assets/images/goldenstephen.png';
+        goldenImg.src = '/FNAE-HTML5-1.2.3/assets/images/goldenstephen.png';
         goldenImg.style.position = 'absolute';
         goldenImg.style.top = '50%';
         goldenImg.style.left = '50%';
@@ -1015,7 +1015,7 @@ class Game {
                         
                         // 创建胜利画面
                         const winScreen = document.createElement('img');
-                        winScreen.src = '/fnae/assets/images/winscreen.png';
+                        winScreen.src = '/FNAE-HTML5-1.2.3/assets/images/winscreen.png';
                         winScreen.style.width = '100%';
                         winScreen.style.height = '100%';
                         winScreen.style.objectFit = 'contain';
@@ -1103,7 +1103,7 @@ class Game {
                 
                 // 创建night6.png图片
                 const night6Image = document.createElement('img');
-                night6Image.src = '/fnae/assets/images/night6.png';
+                night6Image.src = '/FNAE-HTML5-1.2.3/assets/images/night6.png';
                 night6Image.style.width = '100%';
                 night6Image.style.height = '100%';
                 night6Image.style.objectFit = 'contain';
