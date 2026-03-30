@@ -545,7 +545,7 @@ class CameraSystem {
         
         // 添加地图图片
         const mapImg = document.createElement('img');
-        mapImg.src = '/FNAE-HTML5-1.2.3/assets/images/FNAE-Map-layout.png';
+        mapImg.src = '/fnae/assets/images/FNAE-Map-layout.png';
         mapImg.style.width = '100%';
         mapImg.style.height = 'auto';
         mapImg.style.display = 'block';
